@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+pandas
+polars
+scikit-learn
+plotly
+openai
+python-multipart
+astunparse
+pydantic
+python-dotenv
+pyarrow
+google-genai
