@@ -17,9 +17,10 @@ class DataAnalysisAgent(BaseAgent):
         2. Save the final result to a variable named `result`.
         3. If the result is a number, string, or small dictionary, just assign it.
         4. If the result is a table, assign the relevant DataFrame/Series to `result`.
-        5. Do NOT import libraries.
-        6. Return ONLY the code block.
-        7. **Robust Date Parsing**: If converting strings to dates, ALWAYS use `pd.to_datetime(..., errors='coerce', dayfirst=True)` or `pd.to_datetime(..., format='mixed')` to avoid common parsing errors like "day out of range".
+        5. Do NOT import libraries. The following are PRE-IMPORTED: `pd`, `np`, `train_test_split`, `LinearRegression`, `RandomForestRegressor`, `RandomForestClassifier`, `mean_squared_error`, `r2_score`, `accuracy_score`.
+        6. **NO PLOTTING**: Never use `matplotlib`, `seaborn`, or `df.plot()`. Always return data or metrics as text/numbers in the `result` variable.
+        7. Return ONLY the code block.
+        8. **Robust Date Parsing**: If converting strings to dates, ALWAYS use `pd.to_datetime(..., errors='coerce', dayfirst=True)` or `pd.to_datetime(..., format='mixed')` to avoid common parsing errors like "day out of range".
         
         Dataset Metadata:
         {dataset_metadata.get('columns', {})}

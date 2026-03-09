@@ -7,7 +7,7 @@ class SafeExecutor:
     Safely executes AI-generated Pandas code using AST parsing.
     Prevents execution of dangerous builtins and modules.
     """
-    ALLOWED_MODULES = {'pd', 'np', 'df', 'plt', 'sns'}
+    ALLOWED_MODULES = {'pd', 'np', 'df', 'plt', 'sns', 'sklearn'}
     ALLOWED_BUILTINS = {'len', 'range', 'list', 'dict', 'set', 'int', 'float', 'str', 'bool', 'round', 'sum', 'min', 'max', 'abs', 'print'}
     
     def __init__(self):
@@ -36,7 +36,7 @@ class SafeExecutor:
             if isinstance(node, ast.Call):
                 if isinstance(node.func, ast.Name):
                     if node.func.id not in self.ALLOWED_BUILTINS:
-                        # Allow pandas/numpy methods
+                        # Allow pandas/numpy/sklearn methods
                         pass
                 elif isinstance(node.func, ast.Attribute):
                     # Check for things like os.system
@@ -55,20 +55,33 @@ class SafeExecutor:
         if not is_safe:
             return None, df, error
         
+        # Pre-import common DS/ML libraries
+        import numpy as np
+        from sklearn.model_selection import train_test_split
+        from sklearn.linear_model import LinearRegression
+        from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
+        from sklearn.metrics import mean_squared_error, r2_score, accuracy_score
+        
         # Define the local scope
         local_scope = {
             'df': df,
             'pd': pd,
+            'np': np,
+            'train_test_split': train_test_split,
+            'LinearRegression': LinearRegression,
+            'RandomForestRegressor': RandomForestRegressor,
+            'RandomForestClassifier': RandomForestClassifier,
+            'mean_squared_error': mean_squared_error,
+            'r2_score': r2_score,
+            'accuracy_score': accuracy_score,
             'import': None  # Extra precaution
         }
         
         try:
             # We use exec but with a restricted global/local scope
-            # For multiline code, we might want to capture the final output or specific variables
             exec(code_str, {}, local_scope)
             
             updated_df = local_scope.get('df')
-            # Extract other results? (e.g. if the code creates a 'result' variable)
             result = local_scope.get('result', "Operation completed successfully.")
             
             return result, updated_df, None

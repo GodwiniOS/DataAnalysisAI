@@ -264,10 +264,13 @@ async def chat(request: ChatRequest):
     if "analysis" in intents:
         ana_res = await ana_agent.process(request.message, metadata, provider=request.provider, model=request.model)
         ana_code = ana_res["code"]
-        ana_result, _, error = executor.execute(ana_code, current_df)
+        ana_result, updated_df, error = executor.execute(ana_code, current_df)
         if error:
             response_elements.append({"type": "error", "content": error})
         else:
+            current_df = updated_df
+            # Update dataset metadata for following steps (like visualization)
+            metadata = profile_dataframe(current_df)
             response_elements.append({"type": "code", "content": ana_code})
             response_elements.append({"type": "analysis_result", "content": str(ana_result)})
 

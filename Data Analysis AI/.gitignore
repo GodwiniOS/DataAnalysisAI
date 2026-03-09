@@ -1,0 +1,23 @@
+# Environments
+.env
+venv/
+node_modules/
+
+# Next.js
+.next/
+out/
+build/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Data & Sessions
+backend/data/
+*.csv
+*.parquet
+*.sqlite
+
+# OS
+.DS_Store

@@ -33,7 +33,7 @@ class PathwayAgent(BaseAgent):
             features = session_state.get("pathway_features", "Unknown")
             
             # Format this as an engineering/analysis prompt to be executed by other agents
-            execution_prompt = f"Run a {algorithm} model to predict '{target}' using features: '{features}'. Return the model metrics, and ALSO generate a chart visualising the results to interpret the model."
+            execution_prompt = f"Run a {algorithm} model to predict '{target}' using features: '{features}'. Return the model metrics (like Accuracy/R2, MSE, etc.) and a summary of the prediction results."
             return {
                 "type": "execute_pathway",
                 "execution_prompt": execution_prompt
